@@ -16,12 +16,10 @@ sub import {
     $code_str .= "use Class::XSAccessor::Array {\n";
     $code_str .= "    constructor => 'new',\n";
     $code_str .= "    accessors => {\n";
-    $code_str .= "        parent => 0,\n";
-    $code_str .= "        children => 1,\n";
-    my $i = 2;
-    for (@attrs) {
-        $code_str .= "        '$_' => $i,\n";
-        $i++;
+    my $idx = 0;
+    for (@attrs, "parent", "children") {
+        $code_str .= "        '$_' => $idx,\n";
+        $idx++;
     }
     $code_str .= "    },\n";
     $code_str .= "};\n";
@@ -50,6 +48,4 @@ In F<lib/My/ArrayTree.pm>:
 
 This is just like L<Tree::Object::Array> except: 1) it uses
 L<Class::XSAccessor::Array> to generate the accessor methods and the
-constructor; 2) the object storage layout is different (parent is stored in
-element 0, children as arrayref in element 2, the other attributes in subsequent
-elements).
+constructor.
